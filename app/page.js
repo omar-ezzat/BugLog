@@ -1,65 +1,87 @@
 import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import PostCard from "@/components/postCard";
 
-export default function Home() {
+/**
+ *
+ * dummy data
+ */
+// const posts = [
+//   {
+//     id: "1",
+//     title: "Cannot read properties of undefined in React",
+//     description:
+//       "I got this error while trying to map over data coming from an API. The page breaks before the data is loaded.",
+//     errorMessage:
+//       "TypeError: Cannot read properties of undefined (reading 'map')",
+//     language: "JavaScript",
+//     tags: ["React", "JavaScript", "API"],
+//     status: "open",
+//     authorName: "Omar",
+//     likes: 12,
+//     comments: 4,
+//   },
+//   {
+//     id: "2",
+//     title: "MongoDB connection works locally but fails on deployment",
+//     description:
+//       "The app connects fine on localhost, but after deploying it cannot connect to MongoDB Atlas.",
+//     errorMessage:
+//       "MongooseServerSelectionError: Could not connect to any servers",
+//     language: "Node.js",
+//     tags: ["MongoDB", "Next.js", "Deployment"],
+//     status: "solved",
+//     authorName: "Ahmed",
+//     likes: 8,
+//     comments: 6,
+//   },
+//   {
+//     id: "3",
+//     title: "Next.js dynamic route returns 404",
+//     description:
+//       "I created a dynamic route inside the app folder but the page keeps returning 404.",
+//     errorMessage: "404 This page could not be found",
+//     language: "Next.js",
+//     tags: ["Next.js", "App Router"],
+//     status: "open",
+//     authorName: "Sara",
+//     likes: 5,
+//     comments: 2,
+//   },
+// ];
+
+async function getPosts() {
+  try {
+    const res = await fetch("http://localhost:3000/api/posts");
+    return res.json()
+  } catch (err) {
+    console.log("Error", err);
+    return [];
+  }
+}
+
+async function Home() {
+  const posts = await getPosts();
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
+    <>
+      <main className="max-w-6xl mx-auto p-6">
+        <section className="mb-8">
+          <h1 className="text-4xl font-bold tracking-tight">
+            Latest Bug Posts
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-muted-foreground mt-2">
+            Read coding bugs, errors, and solutions shared by developers.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        </section>
+
+        <section className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => (
+            <PostCard key={post._id} post={post} />
+          ))}
+        </section>
       </main>
-    </div>
+    </>
   );
 }
+
+export default Home;
