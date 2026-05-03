@@ -1,36 +1,56 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import CommentCard from "@/components/commentCard";
 import CommentForm from "@/components/commentForm";
 
 import React from "react";
 
+async function getPost(id) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch post");
+    }
+
+    return res.json();
+  } catch (error) {
+    return null;
+  }
+}
+
 const Page = async ({ params }) => {
   const { id: postId } = await params;
 
-  console.log(postId);
+  const post = await getPost(postId);
+
+  // console.log(postId);
 
   /**
    * dummy data
    */
 
-  const post = {
-    id: postId,
-    title: "Cannot read properties of undefined in React",
-    description:
-      "I got this error while trying to map over data coming from an API. The page breaks before the data is loaded.",
-    errorMessage:
-      "TypeError: Cannot read properties of undefined (reading 'map')",
-    codeSnippet: `data.map(item => item.name)`,
-    language: "JavaScript",
-    tags: ["React", "JavaScript", "API"],
-    status: "open",
-    authorName: "Omar",
-    likes: 12,
-    comments: 4,
-    solution: "",
-  };
+  // const post = {
+  //   id: postId,
+  //   title: "Cannot read properties of undefined in React",
+  //   description:
+  //     "I got this error while trying to map over data coming from an API. The page breaks before the data is loaded.",
+  //   errorMessage:
+  //     "TypeError: Cannot read properties of undefined (reading 'map')",
+  //   codeSnippet: `data.map(item => item.name)`,
+  //   language: "JavaScript",
+  //   tags: ["React", "JavaScript", "API"],
+  //   status: "open",
+  //   authorName: "Omar",
+  //   likes: 12,
+  //   comments: 4,
+  //   solution: "",
+  // };
+
   const comments = [
     {
       id: "1",
@@ -48,16 +68,29 @@ const Page = async ({ params }) => {
     },
   ];
 
+  if (!post) {
+    return <div className="p-6">Post not found</div>;
+  }
+
   return (
     <>
       <div className="max-w-3xl mx-auto p-6 space-y-6">
         <div>
           <h1 className="text-3xl font-bold">{post.title}</h1>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center justify-between gap-2 mt-2">
+            <div className="flex gap-3 ">
             <Badge>{post.status}</Badge>
             <span className="text-muted-foreground text-sm">
               by {post.authorName}
             </span>
+            </div>
+            <div className="flex gap-2">
+              <Link href={`/posts/${post._id}/edit`}>
+                <Button variant="outline">Edit Post</Button>
+              </Link>
+
+              <Button variant="destructive">Delete Post</Button>
+            </div>
           </div>
         </div>
 

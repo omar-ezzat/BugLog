@@ -9,19 +9,20 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 
 
-const PostForm = ({ buttonText = "Create Post" }) => {
+const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = null }) => {
 
 
     const router = useRouter()
 
     const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        errorMessage: "",
-        codeSnippet: "",
-        language: "",
-        tags: "",
+        title: defaultValues?.title || "",
+        description: defaultValues?.description || "",
+        errorMessage: defaultValues?.errorMessage || "",
+        codeSnippet: defaultValues?.codeSnippet || "",
+        language: defaultValues?.language || "",
+        tags: defaultValues?.tags?.join(", ") || "",
     })
+
 
     const handleChange = (e) => {
         setFormData({
@@ -33,15 +34,20 @@ const PostForm = ({ buttonText = "Create Post" }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await fetch("/api/posts", {
-            method: "POST",
+        const payload = {
+            ...formData,
+            tags: formData.tags.split(",").map((tag) => tag.trim()),
+        }
+
+        const url = postId ? `/api/posts/${postId}` : "/api/posts"
+        const method = postId ? "PUT" : "POST"
+
+        const res = await fetch(url, {
+            method,
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                ...formData,
-                tags: formData.tags.split(",").map((tag) => tag.trim()),
-            }),
+            body: JSON.stringify(payload),
         })
 
         if (res.ok) {
@@ -49,6 +55,7 @@ const PostForm = ({ buttonText = "Create Post" }) => {
             router.refresh()
         }
     }
+
 
 
 

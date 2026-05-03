@@ -9,13 +9,13 @@ import PostCard from "@/components/postCard";
 // const posts = [
 //   {
 //     id: "1",
-//     title: "Cannot read properties of undefined in React",
+//     title: "Cannot",
 //     description:
-//       "I got this error while trying to map over data coming from an API. The page breaks before the data is loaded.",
+//       "I got",
 //     errorMessage:
-//       "TypeError: Cannot read properties of undefined (reading 'map')",
-//     language: "JavaScript",
-//     tags: ["React", "JavaScript", "API"],
+//       "TypeError",
+//     language: "Jav",
+//     tags: ["React"],
 //     status: "open",
 //     authorName: "Omar",
 //     likes: 12,
@@ -64,7 +64,7 @@ async function Home() {
   const posts = await getPosts();
   return (
     <>
-      <main className="max-w-6xl mx-auto p-6">
+      <main className="max-w-6xl mx-auto p-6 w-full">
         <section className="mb-8">
           <h1 className="text-4xl font-bold tracking-tight">
             Latest Bug Posts
@@ -74,7 +74,7 @@ async function Home() {
           </p>
         </section>
 
-        <section className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <section className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}

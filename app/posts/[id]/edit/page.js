@@ -3,8 +3,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import React from "react";
 
-const Page = async ({params}) => {
-    const {id:postId} = await params
+async function getPost(id) {
+  const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) return null;
+
+  return res.json();
+}
+
+const Page = async ({ params }) => {
+  const post = await getPost(params.id);
+  const { id: postId } = await params;
+
+  if (!post) {
+    return <div className="p-6">Post not found</div>;
+  }
+
   return (
     <>
       <main className="w-full px-6 lg:px-20 py-10">
@@ -19,11 +35,13 @@ const Page = async ({params}) => {
           <div className="lg:col-span-2">
             <Card className="shadow-sm border">
               <CardHeader>
-                <CardTitle className="text-xl font-semibold">Editing Post #{postId}</CardTitle>
+                <CardTitle className="text-xl font-semibold">
+                  Editing Post #{postId}
+                </CardTitle>
               </CardHeader>
 
               <CardContent>
-                <PostForm buttonText="Update Post" />
+                <PostForm buttonText="Update Post" defaultValues={post} postId={post._id}/>
               </CardContent>
             </Card>
           </div>

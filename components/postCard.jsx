@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button"
 
 export default function PostCard({ post }) {
   return (
-    <Card className="hover:shadow-md transition">
+    <Card className="hover:shadow-md transition flex h-full flex-col min-h-80">
       <CardHeader>
         <div className="flex items-center justify-between gap-3">
-          <CardTitle className="text-xl">
+          <CardTitle className="text-xl line-clamp-2">
             <Link href={`/posts/${post._id}`} className="hover:underline">
               {post.title}
             </Link>
@@ -20,12 +20,12 @@ export default function PostCard({ post }) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        <p className="text-muted-foreground line-clamp-2">
+      <CardContent className="flex h-full flex-col space-y-4">
+        <p className="text-muted-foreground line-clamp-2 min-h-7">
           {post.description}
         </p>
 
-        <div className="rounded-md bg-muted p-3 font-mono text-sm">
+        <div className="rounded-md bg-muted p-3 line-clamp-2 font-mono text-sm min-h-12">
           {post.errorMessage}
         </div>
 
@@ -37,7 +37,7 @@ export default function PostCard({ post }) {
           ))}
         </div>
 
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className=" flex items-end justify-between text-sm text-muted-foreground mt-auto">
           <span>By {post.authorName}</span>
           <span>{post.likes} likes · {post.comments} comments</span>
         </div>
