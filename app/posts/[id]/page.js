@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import DeletePostButton from "@/components/deletePostButton";
 import Link from "next/link";
 import CommentCard from "@/components/commentCard";
 import CommentForm from "@/components/commentForm";
@@ -89,7 +90,7 @@ const Page = async ({ params }) => {
                 <Button variant="outline">Edit Post</Button>
               </Link>
 
-              <Button variant="destructive">Delete Post</Button>
+              <DeletePostButton postId={post._id}/>
             </div>
           </div>
         </div>

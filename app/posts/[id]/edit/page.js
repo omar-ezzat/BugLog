@@ -14,8 +14,8 @@ async function getPost(id) {
 }
 
 const Page = async ({ params }) => {
-  const post = await getPost(params.id);
   const { id: postId } = await params;
+  const post = await getPost(postId);
 
   if (!post) {
     return <div className="p-6">Post not found</div>;
@@ -25,7 +25,7 @@ const Page = async ({ params }) => {
     <>
       <main className="w-full px-6 lg:px-20 py-10">
         <div className="grid lg:grid-cols-3 gap-10">
-          <div className="hidden lg:block">
+          <div className="lg:block">
             <h1 className="text-3xl font-bold">Edit Bug Post</h1>
             <p className="text-muted-foreground mt-2">
               Update your bug details, error message, code snippet, or solution.
