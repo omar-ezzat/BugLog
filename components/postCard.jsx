@@ -39,7 +39,7 @@ export default function PostCard({ post }) {
 
         <div className=" flex items-end justify-between text-sm text-muted-foreground mt-auto">
           <span>By {post.authorName}</span>
-          <span>{post.likes} likes · {post.comments} comments</span>
+          <span>{post.likesCount} likes · {post.commentsCount} comments</span>
         </div>
 
         <Link href={`/posts/${post._id}`}>
