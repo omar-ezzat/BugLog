@@ -12,7 +12,7 @@ import React from "react";
 
 async function getPost(id) {
   try {
-    const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${id}`, {
       cache: "no-store",
     });
 
@@ -28,7 +28,7 @@ async function getPost(id) {
 
 async function getComments(postId) {
   const res = await fetch(
-    `http://localhost:3000/api/posts/${postId}/comments`,
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${postId}/comments`,
     {
       cache: "no-store",
     },
