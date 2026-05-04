@@ -80,17 +80,17 @@ const Page = async ({ params }) => {
           <h1 className="text-3xl font-bold">{post.title}</h1>
           <div className="flex items-center justify-between gap-2 mt-2">
             <div className="flex gap-3 ">
-            <Badge>{post.status}</Badge>
-            <span className="text-muted-foreground text-sm">
-              by {post.authorName}
-            </span>
+              <Badge>{post.status}</Badge>
+              <span className="text-muted-foreground text-sm">
+                by {post.authorName}
+              </span>
             </div>
             <div className="flex gap-2">
               <Link href={`/posts/${post._id}/edit`}>
                 <Button variant="outline">Edit Post</Button>
               </Link>
 
-              <DeletePostButton postId={post._id}/>
+              <DeletePostButton postId={post._id} />
             </div>
           </div>
         </div>
@@ -112,6 +112,17 @@ const Page = async ({ params }) => {
             <pre>{post.codeSnippet}</pre>
           </CardContent>
         </Card>
+
+        {post.solution && (
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="mb-3 text-xl font-bold">Solution</h2>
+              <p className="text-muted-foreground whitespace-pre-wrap">
+                {post.solution}
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (

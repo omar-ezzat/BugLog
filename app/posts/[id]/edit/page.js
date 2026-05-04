@@ -36,7 +36,7 @@ const Page = async ({ params }) => {
             <Card className="shadow-sm border">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold">
-                  Editing Post #{postId}
+                  Editing Post <span className="font-semibold">#{post.title}</span>
                 </CardTitle>
               </CardHeader>
 

@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/post";
+import { postSchema } from "@/lib/validators/post";
 
 export async function GET(req, { params }) {
   try {
@@ -26,6 +27,21 @@ export async function PUT(req, { params }) {
     const { id: postId } = await params;
 
     const body = await req.json();
+
+    const validator = postSchema.safeParse(body);
+
+    if (!validator.success) {
+      return Response.json(
+        {
+          errors: validator.error.errors.map((err) => ({
+            field: err.path[0],
+            message: err.message,
+          })),
+        },
+        { status: 400 },
+      );
+    }
+
     const updatedPost = await Post.findByIdAndUpdate(postId, body, {
       new: true,
       runValidators: true,
