@@ -25,7 +25,7 @@ export async function POST(req) {
     if (!validator.success) {
       return Response.json(
         {
-          errors: validator.error.errors.map((err) => ({
+          errors: validator.error.issues.map((err) => ({
             field: err.path[0],
             message: err.message,
           })),
@@ -35,7 +35,7 @@ export async function POST(req) {
     }
 
     const newPost = await Post.create({
-      ...body,
+      ...validator.data,
       authorId: "demo-user",
       authorName: "Omar",
     });

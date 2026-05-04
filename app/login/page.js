@@ -1,3 +1,5 @@
+"use client"
+import { authClient } from "@/lib/auth_client";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,11 +23,16 @@ const Page = () => {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <Button className="w-full" variant="outline">
+            <Button className="w-full" variant="outline" onClick={()=>{
+              authClient.signIn.social({
+                provider:"github",
+                callbackURL:"/",
+              })
+            }}>
               Continue with GitHub
             </Button>
 
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 ">Continue with Facebook</Button>
+            {/* <Button className="w-full bg-blue-600 hover:bg-blue-700 ">Continue with Facebook</Button> */}
           </CardContent>
         </Card>
       </main>

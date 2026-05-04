@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 
 export default function PostCard({ post }) {
   return (
-    <Card className="hover:shadow-md transition flex h-full flex-col min-h-80">
+    <Card className="hover:shadow-md transition flex h-full flex-col min-h-70">
       <CardHeader>
         <div className="flex items-center justify-between gap-3">
           <CardTitle className="text-xl line-clamp-2">
@@ -25,9 +25,9 @@ export default function PostCard({ post }) {
           {post.description}
         </p>
 
-        <div className="rounded-md bg-muted p-3 line-clamp-2 font-mono text-sm min-h-12">
+        {post.errorMessage && (<div className="rounded-md bg-muted p-3 line-clamp-2 font-mono text-sm min-h-12">
           {post.errorMessage}
-        </div>
+        </div>)}
 
         <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (

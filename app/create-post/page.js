@@ -1,7 +1,20 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import PostForm from "@/components/postForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const Page = () => {
+const Page = async() => {
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  if (!session) {
+    redirect("/login")
+  }
+
+
   return (
     <>
       <main className="w-full px-6 lg:px-20 py-10">

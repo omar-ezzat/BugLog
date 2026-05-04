@@ -28,12 +28,17 @@ export async function PUT(req, { params }) {
 
     const body = await req.json();
 
+    // console.log(body);
+
     const validator = postSchema.safeParse(body);
 
+    // console.log(validator.error.issues);
+
     if (!validator.success) {
+      console.log("entered");
       return Response.json(
         {
-          errors: validator.error.errors.map((err) => ({
+          errors: validator.error.issues.map((err) => ({
             field: err.path[0],
             message: err.message,
           })),
@@ -42,8 +47,8 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const updatedPost = await Post.findByIdAndUpdate(postId, body, {
-      new: true,
+    const updatedPost = await Post.findByIdAndUpdate(postId, validator.data, {
+      returnDocument:"after",
       runValidators: true,
     });
     if (!updatedPost) {

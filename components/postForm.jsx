@@ -24,7 +24,7 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
         solution: defaultValues?.solution || "",
     })
 
-    const [error, setError] = useState({ title: "", description: "", tags: "" })
+    const [error, setError] = useState({  })
     const [loading, setLoading] = useState(false)
 
 
@@ -34,20 +34,17 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
             [e.target.name]: e.target.value,
         })
 
-        setError({ title: "", description: "", tags: "" })
+        setError({
+            ...error, 
+            [e.target.name]:""
+        })
 
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        // const validationErrors = validate()
-        // if (Object.keys(validationErrors).length > 0) {
-        //     setError({ title: validationErrors.title, description: validationErrors.description })
-        //     return
-        // }
-
         setLoading(true)
+
         const payload = {
             ...formData,
             tags: formData.tags
@@ -57,7 +54,7 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
             status: postId && formData.solution.trim() ? "solved" : "open",
         }
 
-        
+
         const url = postId ? `/api/posts/${postId}` : "/api/posts"
         const method = postId ? "PUT" : "POST"
 
@@ -68,9 +65,12 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
             },
             body: JSON.stringify(payload),
         })
-        setLoading(false)
 
-        const data = res.json()
+        setLoading(false)
+        const data = await res.json()
+
+
+
 
         if (res.ok) {
             router.push("/")
@@ -90,25 +90,6 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
     }
 
 
-    // const validate = () => {
-    //     const newErrors = {}
-
-    //     if (!formData.title.trim()) {
-    //         newErrors.title = "Title is required"
-    //     } else if (formData.title.trim().lenght < 5) {
-    //         newErrors.title = "Title must be at least 5 characters"
-    //     }
-
-    //     if (!formData.description.trim()) {
-    //         newErrors.description = "Description is required"
-    //     } else if (formData.description.trim().lenght < 5) {
-    //         newErrors.description = "Description must be at least 5 characters"
-    //     }
-
-    //     return newErrors
-    // }
-
-
     return (
         <>
             <form onSubmit={handleSubmit} className="w-full space-y-5">
@@ -119,7 +100,7 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
                         onChange={handleChange}
                         placeholder="Example: Cannot read properties of undefined" />
 
-                    {error?.title && (
+                    {error.title && (
                         <p className="text-sm text-red-600"> {error.title}</p>
                     )}
                 </div>)}
@@ -130,7 +111,7 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
                         value={formData.description}
                         onChange={handleChange}
                         placeholder="Explain the bug you faced..." />
-                    {error?.description && (
+                    {error.description && (
                         <p className="text-sm text-red-600"> {error.description}</p>
                     )}
                 </div>
@@ -165,7 +146,7 @@ const PostForm = ({ buttonText = "Create Post", defaultValues = null, postId = n
                         value={formData.tags}
                         onChange={handleChange}
                         placeholder="React, API, MongoDB" />
-                    {error?.tags && (
+                    {error.tags && (
                         <p className="text-sm text-red-600"> {error.tags}</p>
                     )}
                 </div>

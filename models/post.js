@@ -15,17 +15,17 @@ const PostSchema = new mongoose.Schema(
 
     errorMessage: {
       type: String,
-      required: true,
+      default: "",
     },
 
     codeSnippet: {
       type: String,
-      required: true,
+      default: "",
     },
 
     language: {
       type: String,
-      required: true,
+      default: "",
     },
 
     tags: {
