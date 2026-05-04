@@ -1,7 +1,8 @@
 import PostForm from "@/components/postForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import React from "react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 
 async function getPost(id) {
   const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
@@ -21,6 +22,20 @@ const Page = async ({ params }) => {
     return <div className="p-6">Post not found</div>;
   }
 
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  const isOwner = session.user.id === post.authorId;
+
+  if (!isOwner) {
+    redirect("/");
+  }
+
   return (
     <>
       <main className="w-full px-6 lg:px-20 py-10">
@@ -36,12 +51,17 @@ const Page = async ({ params }) => {
             <Card className="shadow-sm border">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold">
-                  Editing Post <span className="font-semibold">#{post.title}</span>
+                  Editing Post{" "}
+                  <span className="font-semibold">#{post.title}</span>
                 </CardTitle>
               </CardHeader>
 
               <CardContent>
-                <PostForm buttonText="Update Post" defaultValues={post} postId={post._id}/>
+                <PostForm
+                  buttonText="Update Post"
+                  defaultValues={post}
+                  postId={post._id}
+                />
               </CardContent>
             </Card>
           </div>

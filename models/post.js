@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { number } from "zod";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -57,6 +58,14 @@ const PostSchema = new mongoose.Schema(
     authorImage: {
       type: String,
       default: "",
+    },
+    likesCount: {
+      type: Number,
+      default: 0,
+    },
+    commentsCount: {
+      type: Number,
+      default: 0,
     },
   },
   {

@@ -1,6 +1,9 @@
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/post";
 import { postSchema } from "@/lib/validators/post";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+
 
 export async function GET() {
   try {
@@ -17,6 +20,14 @@ export async function GET() {
 export async function POST(req) {
   try {
     await dbConnect();
+
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const body = await req.json();
 
@@ -36,8 +47,9 @@ export async function POST(req) {
 
     const newPost = await Post.create({
       ...validator.data,
-      authorId: "demo-user",
-      authorName: "Omar",
+      authorId: session.user.id,
+      authorName: session.user.name,
+      authorImage: session.user.image || "",
     });
 
     return Response.json(newPost);
